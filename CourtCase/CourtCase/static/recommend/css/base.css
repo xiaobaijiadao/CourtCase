@@ -1,0 +1,12 @@
+body {
+	font-family: Microsoft YaHei;
+	background-position: 0 0;
+	background-size: 100% 600px;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+}
+
+.face {
+	background-color: white;
+	width: 100%;
+}

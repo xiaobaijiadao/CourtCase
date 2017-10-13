@@ -1,0 +1,125 @@
+{%  extends "recommend/base.html" %}
+
+{% load static %}
+
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{% static "recommend/css/list.css" %}">
+{% endblock %}
+
+{% block mainbody %}
+<div class="container">	
+	<div class="row" id="search-bar" style="width: 100%">
+		<div class="col-md-10 col-md-offset-1">
+			<form class="input-group col-xs-10 col-md-offset-1"  action="" method="get">
+				{% csrf_token %}
+				<input type="text" class="form-control" id="search-bar-input" name="key" placeholder="输入文章名关键字...">
+				<span class="input-group-btn">
+					<button class="btn btn-default" id="search-bar-submit" type="submit">查找</span></button>
+      			</span>
+    		</form>
+		</div>
+	</div>
+
+<div class="row" id="container">
+	<div class=" col-md-3">
+		<div class="" style="height: 1000px;">
+			<div>
+				<h3>筛选策略</h3>
+				<ul>
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-9 row" id="list">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-xs-12 title">
+					<h1><a href="">title</a></h1>
+				</div>
+				<div class="col-xs-12 desc">
+					<p>最终判决法院&nbsp;&nbsp;&nbsp;发生地&nbsp;&nbsp;时间 </p>
+				</div>
+				<div class="col-xs-12 summary">
+					<p>summary</p>
+				</div>
+				<div class="col-xs-3">
+					<a href=""><span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;b.tag</a>
+				</div>
+				<div class="col-xs-3 col-md-offset-6 link">
+					<a class="btn btn-block btn-default" role="button" href="" style="">详情<span class="glyphicon glyphicon-menu-right" style=""></span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+	
+<!--[CDATA[
+{% for b in blogs %}
+	<div class="row" style="border-bottom: solid thin #AAAAAA; margin-bottom: 20px;padding-bottom: 10px;">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-xs-11" style="height: 69px;padding-left: 10px;">
+					<h1><a href="{% url 'blog:blog_page' b.kind b.id %}" style="font-weight: 10px; color: #444444;">{{ b.title }}</a></h1>
+				</div>
+				<div class="col-xs-12">
+					<p style="color: #666666;">BY&nbsp;&nbsp;{{ b.author }}&nbsp;&nbsp;&nbsp;阅读&nbsp;&nbsp;{{ b.clickTimes }}</p>
+				</div>
+				<div class="col-xs-12" style="padding-top: 5px;">
+					<p>{{ b.summary }}</p>
+				</div>
+				<div class="col-xs-3">
+					<a href="{% url 'blog:blog_search_by_tag' b.tag %}"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;{{ b.tag }}</a>
+				</div>
+				<div class="col-xs-3 col-md-offset-6">
+					<a class="btn btn-block btn-default" role="button" href="{% url 'blog:blog_page' b.kind b.id %}" style="">阅读全文<span class="glyphicon glyphicon-menu-right" style="position: relative; left: 10px;"></span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+
+{% if isPaging %}
+	<nav class="col-xs-5 col-md-offset-4" aria-label="Page navigation">
+		<ul class="pagination">
+			<li>
+			{% if blogs.has_previous %}
+				<a href="?page={{ blogs.previous_page_number }}" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			{% else %}
+				<a href="#" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			{% endif %}
+			</li>
+  			
+  			{% for page_number in blogs.paginator.page_range %}
+    			{% ifequal page_number blogs.number %}
+      				<li><a href="#">{{ page_number }}</a></li>
+    			{% else %}
+      				<li><a href="?page={{ page_number }}">{{ page_number }}</a></li>
+    			{% endifequal %}
+  			{% endfor %}
+
+
+  			<li>
+  			{% if blogs.has_next %}
+				<a href="?page={{ blogs.next_page_number }}" aria-label="Next">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			{% else %}
+				<a href="#" aria-label="Next">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			{% endif %}
+			</li>
+		</ul>
+	</nav>
+{% endif %}
+ -->
+</div>
+{% endblock %}

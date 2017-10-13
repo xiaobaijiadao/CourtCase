@@ -1,0 +1,23 @@
+#outer{
+	border: solid thin #AAAAAA;
+	margin-top: 50px;
+	background-color: #FFFFF0;
+}
+
+#title{
+	height: 69px;
+	padding-left: 10px;
+}
+
+#title >h1{
+	height: 69px;
+	padding-left: 10px;
+}
+
+#tag{
+	padding: 0px 15px;
+}
+
+#tag >p {
+	color: #666666;
+}

@@ -1,0 +1,40 @@
+{%  extends "recommend/base.html" %}
+
+{% load static %}
+
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{% static "recommend/css/index.css" %}">
+{% endblock %}
+
+{% block mainbody %}
+
+<div class="container" style="background-image: url({% static "recommend/img/search_bar_bg.jpg" %});">
+	<div class="row" id="classify-list">
+		<nav class="navbar navbar-default col-xs-10 col-md-offset-1" role="navigation">
+			<div class="container-fluid"> 
+				<div>
+					<ul class="nav navbar-nav row col-md-12">
+						<li class="col-md-2 classify-list-elemnet"><a href="#">首页</a></li>
+						<li class="col-md-2  classify-list-elemnet"><a href="#">刑事案件</a></li>
+						<li class="col-md-2  classify-list-elemnet"><a href="#">民事案件</a></li>
+						<li class="col-md-2  classify-list-elemnet"><a href="#">行政案件</a></li>
+						<li class="col-md-2  classify-list-elemnet"><a href="#">赔偿案件</a></li>
+						<li class="col-md-2  classify-list-elemnet"><a href="#">执行案件</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>	
+	<div class="row" id="search-bar">
+		<div class="col-md-12">
+			<form class="input-group col-xs-10 col-md-offset-1"  action="" method="get">
+				{% csrf_token %}
+				<input type="text" class="form-control" id="search-bar-input" name="key" placeholder="输入文章名关键字...">
+				<span class="input-group-btn">
+					<button class="btn btn-default" id="search-bar-submit" type="submit">查找</button>
+      			</span>
+    		</form>
+		</div>
+	</div>	
+</div>
+{% endblock %}

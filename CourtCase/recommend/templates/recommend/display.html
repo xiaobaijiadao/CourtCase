@@ -1,0 +1,28 @@
+{%  extends "recommend/base.html" %}
+
+{% load static %}
+
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{% static "recommend/css/display.css" %}">
+{% endblock %}
+
+{% block mainbody %}
+	<div class="row">
+		<div class="col-xs-8 col-md-offset-2" id="outer">	
+			<div class="row">
+				<div class="col-xs-12" id="title">
+					<h1>title</h1>
+				</div>
+				<div id="tag">
+					<p>BY&nbsp;&nbsp; blog.author &nbsp;&nbsp;&nbsp;点击&nbsp;&nbsp; blog.clickTimes </p>
+				</div>
+				<div id="case-pass">
+					content
+				</div>
+				<div id="result">
+					result
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

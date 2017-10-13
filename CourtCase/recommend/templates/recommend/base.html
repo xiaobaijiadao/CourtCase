@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>index</title>
+	{% include "recommend/load.html" %}
+	{% load static %}
+
+	<link rel="stylesheet" type="text/css" href="{% static "recommend/css/base.css" %}">
+	{% block css %}
+	{% endblock %}
+
+</head>
+
+<body>
+	<header>
+		<div class="row">
+			<div class="col-xs-11 col-md-offset-1 row" >		
+			</div>
+		</div>
+	</header>
+
+	<div id="mainbody">
+			{% block mainbody %}{% endblock %}
+	</div>
+
+	<footer>
+		<div>
+			南京大学版权所有
+		</div>
+	</footer>
+</body>
+
+</html>

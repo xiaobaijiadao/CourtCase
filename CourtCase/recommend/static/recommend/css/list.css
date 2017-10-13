@@ -1,0 +1,57 @@
+.container {
+	width: 100%;
+}
+
+#search-bar{
+	margin-top: 30px;
+}	
+
+#search-bar-input {
+	height: 60px;
+	font-size: 18px;
+}
+
+#search-bar-submit {
+	height: 60px;
+	width: 100px;
+	background-color: #DEB887;
+	font-size: 20px;
+}
+
+#container {
+	padding: 50px;
+}
+
+#list{
+	border-bottom: solid thin #AAAAAA;
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+}
+
+.title{
+	height: 69px;
+	padding-left: 10px;
+}
+
+.title >h1 >a {
+	font-weight: 10px;
+	color: #444444;
+}
+
+.desc >p {
+	color: #666666;
+}
+
+.summary{
+	padding-top: 5px;
+}
+
+.link >a {
+	width: 100px;
+	background-color: #F5DEB3;
+}
+
+.link >a >span{
+	position: relative;
+	left: 10px;
+}
