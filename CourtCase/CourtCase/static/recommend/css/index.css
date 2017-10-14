@@ -1,0 +1,39 @@
+div.container{
+	 width: 100%;
+	 min-height: 600px;
+}
+
+#classify-list {
+	width: 100%;
+	height: 100px;
+}
+
+#classify-list > nav {
+	background:rgba(0,0,0,0);
+	color: white;
+	font-size: 20px;
+	border-width: 0px;
+}
+
+.classify-list-elemnet{
+	padding: 0px;
+}
+ .classify-list-elemnet > a{
+	text-align: center;
+}
+
+#search-bar{
+	margin-top: 100px;
+}	
+
+#search-bar-input {
+	height: 60px;
+	font-size: 18px;
+}
+
+#search-bar-submit {
+	height: 60px;
+	width: 100px;
+	background-color: #DEB887;
+	font-size: 20px;
+}

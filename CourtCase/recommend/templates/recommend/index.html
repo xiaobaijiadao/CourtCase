@@ -27,7 +27,7 @@
 	</div>	
 	<div class="row" id="search-bar">
 		<div class="col-md-12">
-			<form class="input-group col-xs-10 col-md-offset-1"  action="" method="get">
+			<form class="input-group col-xs-10 col-md-offset-1"  action="{% url 'recommend:search_list' %}" method="get">
 				{% csrf_token %}
 				<input type="text" class="form-control" id="search-bar-input" name="key" placeholder="输入文章名关键字...">
 				<span class="input-group-btn">

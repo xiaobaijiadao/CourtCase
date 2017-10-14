@@ -2,11 +2,23 @@ body {
 	font-family: Microsoft YaHei;
 	background-position: 0 0;
 	background-size: 100% 600px;
-	background-attachment: fixed;
-	background-repeat: no-repeat;
+	background-color: #F5DEB3;
 }
 
-.face {
-	background-color: white;
+header {
+	background-color: red;
 	width: 100%;
+	height: 100px;
+}
+
+#mainbody{
+	width: 100%;
+	min-height: 800px;
+}
+
+footer {
+	text-align: center;
+	background-color: #8B0000;
+	width: 100%;
+	height: 100px;
 }
