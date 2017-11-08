@@ -5,18 +5,23 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Case
 
+from . import docs
+
 def index(request):
-	return render(request, 'recommend/index.html')
+    test = docs.Test(name = 'linux')
+    test.save()
+    print(docs.Test.objects())
+    return render(request, 'recommend/index.html')
 
 def list_format(cs):
-	cases=[]
-	for c in cs:
-		case = dict(
-			id = c.id,
-			title = c.title,
-		)
-		cases.append(c)
-	return cases
+    cases=[]
+    for c in cs:
+        case = dict(
+            id = c.id,
+            title = c.title,
+        )
+        cases.append(c)
+    return cases
 
 def list(request):
 	result = {}
@@ -59,3 +64,9 @@ def display(request , case_id):
 	)
 
 	return render(request, 'recommend/display.html', result)
+
+def dafen():
+	return 
+
+def sort():
+	return
