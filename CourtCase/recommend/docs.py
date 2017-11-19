@@ -1,12 +1,20 @@
-from mongoengine import *
-connect("testmongo")
-# 如需验证和指定主机名
-# connect('blog', host='192.168.3.1', username='root', password='1234')
+#mongodb连接接口
+import pymongo
 
-class User(Document):
-    username = StringField(required=True)
-    website = URLField()
-    tags = ListField(StringField(max_length=16))
 
-class Test(Document):
-    name = StringField(required=True)
+class Dao:
+
+    def __init__(self, host='localhost', port=27017, user='', pwd=''):
+        self.conn = pymongo.MongoClient()
+
+    def getCollection(self, db, collection):
+        self.col = self.conn[db][collection]
+
+    def findByKey(self, key, value):
+        return self.col.find({key: value})
+
+# if __name__ == '__main__':
+#     d = Dao()
+#     d.getCollection('caseTest', 'indexTable')
+#     for item in d.findByKey('key', 'nv'):
+#         print(item)

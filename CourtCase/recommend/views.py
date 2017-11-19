@@ -3,70 +3,83 @@ from django.http import HttpResponseRedirect
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Case
+from .docs import Dao
+from .roughExtract import roughExtract
+from .fineExtract import fineExtract
+from .point import point
 
-from . import docs
+db = Dao()
 
 def index(request):
-    test = docs.Test(name = 'linux')
-    test.save()
-    print(docs.Test.objects())
     return render(request, 'recommend/index.html')
 
-def list_format(cs):
-    cases=[]
-    for c in cs:
-        case = dict(
-            id = c.id,
-            title = c.title,
-        )
-        cases.append(c)
-    return cases
+
+def list_format(cases):
+    res = []
+
+    db.getCollection('caseTest', 'cases')
+
+    for case in cases:
+        c = db.findByKey("_id", case[0])
+        res.append(dict(
+            id=c["_id"],
+            title=c["title"]
+        ))
+
+    return res
+
 
 def list(request):
-	result = {}
-	limit = 6
-	key = str(request.GET.get('key'))
+    result = {}
+    limit = 6
+    query = str(request.GET.get('key'))
 
-	cs = Case.objects.filter(keyWords__icontains = key).order_by('id')
-	pre_cases = list_format(cs)
+    print("enter rough")
+    roughRes = roughExtract(query).getIndexList()
+    print(roughRes)
+    print("enter fine")
+    fineRes = fineExtract(query, roughRes).getResult()
+    print(fineRes)
+    print("enter point")
+    pointRes = point(fineRes).getRes()
+    print(pointRes)
 
-	paginator = Paginator(pre_cases, limit)
+    #    cs = Case.objects.filter(keyWords__icontains=key).order_by('id')
+    pre_cases = list_format(pointRes)
 
-	page = request.GET.get('page', 1)
-	print(key, page)
-	try:
-		cases = paginator.page(page)
-	except PageNotAnInteger:
-		cases = paginator.page(1)
-	except EmptyPage:
-		cases = paginator.page(paginator.num_pages)
+    paginator = Paginator(pre_cases, limit)
 
-	result['cases'] = cases
-	result['cases_num'] = len(cases)
-	result['isPaging'] = len(pre_cases)>6
-	result['key'] = key
+    page = request.GET.get('page', 1)
+    print(query, page)
+    try:
+        cases = paginator.page(page)
+    except PageNotAnInteger:
+        cases = paginator.page(1)
+    except EmptyPage:
+        cases = paginator.page(paginator.num_pages)
 
-	print(result)
+    result['cases'] = cases
+    result['cases_num'] = len(cases)
+    result['isPaging'] = len(pre_cases) > 6
+    result['key'] = query
 
-	return render(request, 'recommend/list.html', result)
+    print(result)
 
-def display(request , case_id):
-	result = {}
+    return render(request, 'recommend/list.html', result)
 
-	case = Case.objects.get(id=case_id)
 
-	result['case'] = dict(
-		id = case.id,
-		title = case.title,
-		keywords = case.keyWords,
-		content = case.content, 
-	)
+def display(request, case_id):
+    result = {}
 
-	return render(request, 'recommend/display.html', result)
+    db.getCollection('caseTest', 'cases')
+    case = db.findByKey("_id", case_id)
+#    case = Case.objects.get(id=case_id)
 
-def dafen():
-	return 
+    result['case'] = dict(
+        id=case["_id"],
+        title=case["title"],
+        # keywords=case.keyWords,
+        # content=case.content,
+    )
 
-def sort():
-	return
+    return render(request, 'recommend/display.html', result)
