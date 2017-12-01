@@ -8,29 +8,34 @@
 # 索引表 key->[(id,times),]->[pos,]
 # eg:    key->[(1,2)(4,1)]->[2,7,1]
 
-import pymongo
+import pymongo, re
 
 if __name__ == '__main__':
     # 连接数据库
     con = pymongo.MongoClient()
-    col1 = con.caseTest.allCaseTfIdf
-    col2 = con.caseTest.indexTable
+    col1 = con.Lawcase.tf_idf
+    col2 = con.Lawcase.indexTable
 
     indexDict = dict()
 
+    stopwords = {}.fromkeys([line.rstrip() for line in open('stopWords.txt')])
+    print(stopwords)
+
     for item in col1.find():
-        for k, v in item.items():
-            if k != "id" and k != "_id":
-                print(k,v)
-                print("enter")
-                if k in indexDict:
-                    indexDict[k][str(item["id"])] = v
-                else:
-                    dic = dict()
-                    dic["key"] = k
-                    dic[str(item["id"])] = v
-                    indexDict[k] = dic
-            print(indexDict)
+        for k,v in item.items():
+            print(k,v)
+            if k == "wordslist":
+                for wt in v:    #v -> [{"word": , "tfidf": },...]
+                    if wt["word"] not in stopwords and re.search(r'[0-9a-zA-Z ]+', wt["word"]) == None:
+                        if wt["word"] in indexDict:
+                            indexDict[wt["word"]]["caselist"].append({"caseid":item["lawcaseid"], "tfidf":wt["tfidf"]})
+                        else:
+                            dic = dict()
+                            dic["key"] = wt["word"]
+                            caselist = list()
+                            caselist.append({"caseid":item["lawcaseid"], "tfidf":wt["tfidf"]})
+                            dic["caselist"] = caselist
+                            indexDict[wt["word"]] = dic
 
     for k,v in indexDict.items():
         print(v)

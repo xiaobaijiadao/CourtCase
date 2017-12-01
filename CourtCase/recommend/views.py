@@ -3,12 +3,11 @@ from django.http import HttpResponseRedirect
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .docs import Dao
+from .collections import paragraph, lawcase
 from .roughExtract import roughExtract
 from .fineExtract import fineExtract
 from .point import point
 
-db = Dao()
 
 def index(request):
     return render(request, 'recommend/index.html')
@@ -17,12 +16,12 @@ def index(request):
 def list_format(cases):
     res = []
 
-    db.getCollection('caseTest', 'cases')
+    par = paragraph()
 
     for case in cases:
-        c = db.findByKey("_id", case[0])
+        c = par.getInfo(case)
         res.append(dict(
-            id=c["_id"],
+            id=str(c["_id"]),
             title=c["title"]
         ))
 
@@ -31,18 +30,20 @@ def list_format(cases):
 
 def list(request):
     result = {}
-    limit = 6
+    limit = 8
     query = str(request.GET.get('key'))
 
     print("enter rough")
     roughRes = roughExtract(query).getIndexList()
-    print(roughRes)
-    print("enter fine")
-    fineRes = fineExtract(query, roughRes).getResult()
-    print(fineRes)
-    print("enter point")
-    pointRes = point(fineRes).getRes()
-    print(pointRes)
+    # print(roughRes)
+    # print("enter fine")
+    # fineRes = fineExtract(query, roughRes).getResult()
+    # print(fineRes)
+    # print("enter point")
+    # pointRes = point(roughRes).getRes()
+    # pointRes = point(fineRes).getRes()
+    # print(pointRes)
+    pointRes = roughRes
 
     #    cs = Case.objects.filter(keyWords__icontains=key).order_by('id')
     pre_cases = list_format(pointRes)
@@ -70,16 +71,16 @@ def list(request):
 
 def display(request, case_id):
     result = {}
+    par = paragraph()
+    lc = lawcase()
 
-    db.getCollection('caseTest', 'cases')
-    case = db.findByKey("_id", case_id)
-#    case = Case.objects.get(id=case_id)
+    case = par.getInfo(case_id)
+    info = lc.getInfo(case["fullTextId"])
 
     result['case'] = dict(
         id=case["_id"],
         title=case["title"],
-        # keywords=case.keyWords,
-        # content=case.content,
+        content = info,
     )
 
     return render(request, 'recommend/display.html', result)

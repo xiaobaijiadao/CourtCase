@@ -2,9 +2,10 @@
 #输入：前端获取的字符串，粗提取得到的列表
 #输出：进一步缩小范围的搜索结果的列表
 
-from .docs import Dao
 import jieba.analyse
 from gensim import corpora, models, similarities
+
+from .collections import paragraph
 
 class fineExtract:
 
@@ -14,38 +15,35 @@ class fineExtract:
 
     #获取案件的原告诉称、被告辩称和查明事实段信息，按类存入dict
     def getRoughCaseInf(self):
-        db = Dao()
-        db.getCollection('caseTest', 'indexTable')
+        par = paragraph()
 
-        caseMultidimInfo = dict()
-        wzay = list()
-        ygscd = list()
-        bgbcd = list()
-        cmssd = list()
+        # caseMultidimInfo = dict()
+        # wzay = list()
+        # ygscd = list()
+        # bgbcd = list()
+        # cmssd = list()
+        caseAJJBQKs = list()
 
         i = 0
         for case in self.roughRes:
-            cs = db.findByKey(id, case[0])[0]
-            for k,v in cs.items():
-                if k == "YGSCD":
-                    ygscd.append(v)
-                elif k == "BGBCD":
-                    bgbcd.append(v)
-                elif k == "CMSSD":
-                    cmssd.append(v)
-                elif k == "WZAY":
-                    wzay.append(v)
+            cs = par.getAJJBQKBy_Id(case[0])
+            # for k,v in cs.items():
+            #     if k == "YGSCD":
+            #         ygscd.append(v)
+            #     elif k == "BGBCD":
+            #         bgbcd.append(v)
+            #     elif k == "CMSSD":
+            #         cmssd.append(v)
+            #     elif k == "WZAY":
+            #         wzay.append(v)
+            caseAJJBQKs.append(cs)
 
-            i += 1
-            if i > 100:
-                break
+        # caseMultidimInfo['ygscd'] = ygscd
+        # caseMultidimInfo['bgbcd'] = bgbcd
+        # caseMultidimInfo['cmssd'] = cmssd
+        # caseMultidimInfo['wzay'] = wzay
 
-        caseMultidimInfo['ygscd'] = ygscd
-        caseMultidimInfo['bgbcd'] = bgbcd
-        caseMultidimInfo['cmssd'] = cmssd
-        caseMultidimInfo['wzay'] = wzay
-
-        return caseMultidimInfo
+        return caseAJJBQKs
 
     #返回查询信息分别与每个案件的原告诉称、被告辩称和查明事实段信息的文档相似度
     def computeEachSimilarity(self, caseInfoList):
@@ -66,7 +64,7 @@ class fineExtract:
         #获取每个文段的基于该tfidf模型的向量
         corpus_tfidf = tfidf[corpus]
         #建立LSI模型
-        lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=2)
+        lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=20)
         #将文档映射到该低维空间，个人理解就是降维
         corpus_lsi = lsi[corpus_tfidf]
 
@@ -86,7 +84,7 @@ class fineExtract:
 
         sim = index[query_lsi]
 
-        return sorted(enumerate(sim), key=lambda item: item[0])
+        return sorted(enumerate(sim), key=lambda item: item[1],  reverse=True)
 
     #
     def collectSimilarity(self):
@@ -104,7 +102,20 @@ class fineExtract:
         return similarity
 
     def getResult(self):
-        res = self.collectSimilarity()
+        #res = self.collectSimilarity()
+        sim = self.computeEachSimilarity(self.getRoughCaseInf())
+        res = list()
+        if len(sim) > 50:
+            i = 0
+            for case in sim:
+                res.append(self.roughRes[case[0]][0])
+                i += 1
+                if i>49:
+                    break
+        else:
+            for case in sim:
+                res.append(self.roughRes[case[0]][0])
+
         return res
 
 
