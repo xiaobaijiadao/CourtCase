@@ -4,7 +4,9 @@
 # 输出：按tfidf值排序的id列表
 
 import jieba
-from .collections import indexTable
+from .collections import indexTable, dispute
+
+from time import clock
 
 
 class roughExtract:
@@ -14,14 +16,18 @@ class roughExtract:
     def token(self):#分词
         return jieba.cut_for_search(self.input)
 
-    def getIndexList(self):#获取第一次提取列表
+    def getIndexList1(self):#获取第一次提取列表
         indextb = indexTable()
 
         midResult1 = dict()
         # print(self.input)
 
         #所有包含关键字的案件的tfidf求和值和包含关键字总数
+        startSeg = clock()
         seg = self.token()
+        finishSeg = clock()
+        print("分词耗时： %d秒" % (finishSeg-startSeg)/1000000)
+
         for s in seg:
             for k,v in indextb.getCaselistByKey(s).items():
                 if k not in midResult1:
@@ -59,6 +65,50 @@ class roughExtract:
 
         return res
 
+
+    def getIndexList2(self):#获取第一次提取列表
+        indextb = indexTable()
+
+        midResult = dict()
+        # print(self.input)
+
+        keyWordsWeight = dispute().getAllWeight()
+
+        #所有包含关键字的案件的tfidf求和值
+        startSeg = clock()
+        seg = self.token()
+        finishSeg = clock()
+        print("分词耗时： %d 秒" % (finishSeg - startSeg))
+
+        startReadMongo = clock()
+        for s in seg:
+            for caseid,tfidf in indextb.getCaselistByKey2(s).items():
+                weight = 1
+                if s in keyWordsWeight:
+                    weight = keyWordsWeight[s]
+                if caseid not in midResult:
+                    midResult[caseid] = tfidf * weight
+                else:
+                    midResult[caseid] += tfidf * weight
+
+        finishReadMongo = clock()
+        print("查询索引表时间：%d 微秒" % (finishReadMongo - startReadMongo))
+
+
+        #对tfidf和排序
+        startSort = clock()
+        sortRes = sorted(midResult.items(), key=lambda item: item[1],  reverse=True)
+        res = list()
+        for item in sortRes:
+            res.append(item[0])
+            if len(res)>50:
+                break
+        finishSort = clock()
+        print("排序时间：%d微秒" % (finishSort-startSort))
+        print(res)
+        print(len(res))
+
+        return res
 
 if __name__ == '__main__':
     r = roughExtract("索要离婚赔偿100000元")

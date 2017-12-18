@@ -1,9 +1,12 @@
 import pymongo
 from .dao import Dao
 
+host = 'localhost'
+port = 27017
+
 class indexTable:
     def __init__(self):
-        self.dao = Dao()
+        self.dao = Dao(host, port)
         self.dao.getCollection("Lawcase", "indexTable")
 
     def getAllDoc(self):
@@ -19,9 +22,16 @@ class indexTable:
                 res[case["caseid"]] = cs
         return res
 
+    def getCaselistByKey2(self, word):
+        res = dict()
+        for item in self.dao.findByKey(key= "key", value= word):
+            for case in item["caselist"]:
+                res[case["caseid"]] = case["tfidf"]
+        return res
+
 class paragraph:
     def __init__(self):
-        self.dao = Dao()
+        self.dao = Dao(host, port)
         self.dao.getCollection("Lawcase", "paragraph")
 
     def getAllDoc(self):
@@ -56,9 +66,24 @@ class paragraph:
 
 class lawcase:
     def __init__(self):
-        self.dao = Dao()
+        self.dao = Dao(host, port)
         self.dao.getCollection("Lawcase", "lawcase")
 
     def getInfo(self, word):
         item = self.dao.getByKey(key="_id", value=word)
         return item
+
+class dispute:
+    def __init__(self):
+        self.dao = Dao(host, port)
+        self.dao.getCollection("Lawcase", "tokendispute")
+
+    def getAllDoc(self):
+        return self.dao.getAll()
+
+    def getAllWeight(self):
+        res = dict()
+        for item in self.getAllDoc():
+            res[item["word"]] = item["weight"]
+
+        return res

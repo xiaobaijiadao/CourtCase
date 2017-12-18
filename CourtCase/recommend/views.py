@@ -5,8 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .collections import paragraph, lawcase
 from .roughExtract import roughExtract
-from .fineExtract import fineExtract
-from .point import point
+from time import clock
 
 
 def index(request):
@@ -34,7 +33,10 @@ def list(request):
     query = str(request.GET.get('key'))
 
     print("enter rough")
-    roughRes = roughExtract(query).getIndexList()
+    startSeg = clock()
+    roughRes = roughExtract(query).getIndexList2()
+    finishSeg = clock()
+    print("索引耗时： %d 微秒" % (finishSeg - startSeg))
     # print(roughRes)
     # print("enter fine")
     # fineRes = fineExtract(query, roughRes).getResult()
@@ -46,12 +48,13 @@ def list(request):
     pointRes = roughRes
 
     #    cs = Case.objects.filter(keyWords__icontains=key).order_by('id')
+    startPage = clock()
     pre_cases = list_format(pointRes)
 
     paginator = Paginator(pre_cases, limit)
 
     page = request.GET.get('page', 1)
-    print(query, page)
+
     try:
         cases = paginator.page(page)
     except PageNotAnInteger:
@@ -63,8 +66,8 @@ def list(request):
     result['cases_num'] = len(cases)
     result['isPaging'] = len(pre_cases) > 6
     result['key'] = query
-
-    print(result)
+    finishPage = clock()
+    print("分页耗时： %d 微秒" % (finishPage - startPage))
 
     return render(request, 'recommend/list.html', result)
 

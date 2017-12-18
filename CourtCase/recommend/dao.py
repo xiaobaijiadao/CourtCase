@@ -11,7 +11,9 @@ class Dao:
         self.col = self.conn[db][collection]
 
     def findByKey(self, key, value):
-        return self.col.find({key: value})
+        if self.col.find({key: value}).count()>0:
+            return self.col.find({key: value})
+        return dict()
 
     def getByKey(self, key, value):
         if key == "_id":
