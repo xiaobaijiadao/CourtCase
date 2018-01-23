@@ -1,20 +1,15 @@
 import pymongo
-from .dao import Dao
+from bson.objectid import ObjectId
+from django.conf import settings
 
-host = 'localhost'
-port = 27017
 
 class indexTable:
     def __init__(self):
-        self.dao = Dao(host, port)
-        self.dao.getCollection("Lawcase", "indexTable")
+        self.col = settings.DB_CON.divorceCase.indexTable
 
-    def getAllDoc(self):
-        return self.dao.getAll()
-
-    def getCaselistByKey(self, word):
+    def getCaselistByKeyforkeyword(self, word):
         res = dict()
-        for item in self.dao.findByKey(key= "key", value= word):
+        for item in self.col.find({"key": word}):
             for case in item["caselist"]:
                 cs = dict()
                 cs["tfidf"] = case["tfidf"]
@@ -22,68 +17,138 @@ class indexTable:
                 res[case["caseid"]] = cs
         return res
 
-    def getCaselistByKey2(self, word):
+    def getCaselistByKeyfortfidf(self, word):
         res = dict()
-        for item in self.dao.findByKey(key= "key", value= word):
+        for item in self.col.find({"key" : word}):
             for case in item["caselist"]:
                 res[case["caseid"]] = case["tfidf"]
         return res
 
-class paragraph:
+
+class LDAvec:
     def __init__(self):
-        self.dao = Dao(host, port)
-        self.dao.getCollection("Lawcase", "paragraph")
+        self.col = settings.DB_CON.divorceCase.LDAvec
 
-    def getAllDoc(self):
-        return self.dao.getAll()
+    def getCaselistByDis(self, dis):
+        res = list()
+        cond = dict()
 
-    def getAJJBQKBy_Id(self, word):
-        res = ""
-        item = self.dao.getByKey(key= "_id", value= word)
+        i = 0
+        for d in dis:
+            key = 'dis.'+str(i)
+            if d != 0.0:
+                cond[key] = {
+                    '$gt': d - 0.3,
+                    '$lt': d + 0.3,
+                }
+            else:
+                cond[key] = {
+                    '$lt': d + 0.3,
+                }
+            i += 1
 
-        litigationRecord = "" if item["litigationRecord"] == "" else item["litigationRecord"]["text"]
-        defendantArgued = "" if item["defendantArgued"] == "" else item["defendantArgued"]["text"]
-        factFound = "" if item["factFound"] == "" else item["factFound"]["text"]
-
-        res = litigationRecord + defendantArgued + factFound
-        print(res)
+        for item in self.col.find(cond):
+            cs = dict()
+            cs["id"] = item["fullTextId"]
+            cs["dis"] = item['dis']
+            res.append(cs)
 
         return res
 
-    def getDisplayInfoBy_Id(self, word):
-        res = dict()
-        item = self.dao.getByKey(key="_id", value=word)
 
-        res["plain"] = "" if item["litigationRecord"] == "" else item["litigationRecord"]["text"]
-        res["defendantArgued"] = "" if item["defendantArgued"] == "" else item["defendantArgued"]["text"]
-        res["factFound"] = "" if item["factFound"] == "" else item["factFound"]["text"]
-        res["analysisProcess"] = "" if item["analysisProcess"] == "" else item["analysisProcess"]["text"]
-        res["caseDecision"] = "" if item["caseDecision"] == "" else item["caseDecision"]["text"]
+class paragraph:
+    def __init__(self):
+        self.col = settings.DB_CON.divorceCase.AJsegment
 
-    def getInfo(self, word):
-        item = self.dao.getByKey(key="_id", value=word)
-        return item
+    def getInfo(self, id):
+        item = self.col.find_one({"_id" : ObjectId(id)})
+        return (item['fulltextid'], item['title'])
+
+    def getInfoByFullTextId(self, id):
+        item = self.col.find_one({"fulltextid": id})
+        return (item['fulltextid'], item['title'])
+
+
+class AJsegment:
+    def __init__(self):
+        self.col = settings.DB_CON.divorceCase.AJsegment
+
+    def getfulltextid(self, id):
+        item = self.col.find_one({"_id" : ObjectId(id)})
+        return item['fulltextid']
+
 
 class lawcase:
     def __init__(self):
-        self.dao = Dao(host, port)
-        self.dao.getCollection("Lawcase", "lawcase")
+        self.col = settings.DB_CON.lawCase.lawcase
 
-    def getInfo(self, word):
-        item = self.dao.getByKey(key="_id", value=word)
-        return item
+    def getInfo(self, id):
+        item = self.col.find_one({"_id" : ObjectId(id)})
+        return item['text']
 
 class dispute:
     def __init__(self):
-        self.dao = Dao(host, port)
-        self.dao.getCollection("Lawcase", "tokendispute")
-
-    def getAllDoc(self):
-        return self.dao.getAll()
+        self.col = settings.DB_CON.lawCase.tokendispute
 
     def getAllWeight(self):
         res = dict()
-        for item in self.getAllDoc():
+        for item in self.col.find():
             res[item["word"]] = item["weight"]
 
         return res
+
+class searchPerform:
+    def __init__(self):
+        self.col = settings.DB_CON.divorceCase.searchPerform
+
+    def getReferenceNum(self):
+        refNum = [len(item['ref']) for item in self.col.find()]
+        return refNum
+
+    def getRNAndCC(self, option):
+        refNum = []
+        coverCount = []
+
+        cur = self.col.find(no_cursor_timeout = True)
+        for item in cur:
+            rn = []
+            cc = []
+            for i in item[option]:
+                rn.append(len(i['ref']))
+                cc.append(i['covercount'])
+            refNum.append(rn)
+            coverCount.append(cc)
+        cur.close()
+
+        return refNum,coverCount
+
+    def getReferenceNumAndCoverCount(self):
+        res = dict()
+
+        res['ReferenceNumByKeyword'],res['CoverCountByKeyword'] = self.getRNAndCC('resByKeyWord')
+        res['ReferenceNumByTfidf'],res['CoverCountByTfidf'] = self.getRNAndCC('resByTfidf')
+        res['ReferenceNumByLda'],res['CoverCountByLda'] = self.getRNAndCC('resByLda')
+
+        return res
+
+    def getStatuteSetList(self, option, limit=50):
+        #获取不同方法得到的50条数据中前10条，前20条和前50条的法条集合
+        statuteSetList = []
+
+        cur = self.col.find(no_cursor_timeout=True)
+
+        if option == 'ref':
+            for item in cur:
+                statutes = set(item['ref'])
+                statuteSetList.append(statutes)
+        elif option == 'resByKeyWord' or option == 'resByTfidf' or option == 'resByLda':
+            for item in cur:
+                statutes = []
+                for i in item[option][:limit]:
+                    statutes.extend(i['ref'])
+
+                statuteSetList.append(set(statutes))
+
+        cur.close()
+
+        return statuteSetList

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from gensim import models
+import  pymongo
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +28,7 @@ SECRET_KEY = '2t5-ou17q=o$h&cg5p-2-_x$*%$xj2+(npgr^3i-dso3+p6y&&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,10 +78,10 @@ WSGI_APPLICATION = 'CourtCase.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
 }
 
 
@@ -105,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'zh_Hans'
+LANGUAGE_CODE = 'en_us'
 
 TIME_ZONE = 'Asia/Shanghai'
 
@@ -124,3 +126,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'CourtCase/static/')
 STATICFILES_DIRS = (
     'recommend/static/',
 )
+
+# LDA模型
+LDA_MODEL = models.LdaModel.load(os.path.join(BASE_DIR, 'recommend/model/lda.model'))
+TEXT2VEC = models.LdaModel.load(os.path.join(BASE_DIR, 'recommend/model/lda.model.id2word'))
+
+# mongo数据库
+# DB_HOST = '192.168.68.11'
+# DB_PORT = 20000
+DB_HOST = 'localhost'
+DB_PORT = 27017
+
+DB_CON = pymongo.MongoClient(DB_HOST, DB_PORT)

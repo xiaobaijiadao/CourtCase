@@ -48,18 +48,18 @@ def write2TokenDispute(col, dic):
             doc["word"] = word
             doc["list"] = caList
             doc["weight"] = weight
-            if weight > max:
-                max = weight
-            if weight < min:
-                min = weight
+            # if weight > max:
+            #     max = weight
+            # if weight < min:
+            #     min = weight
 
             col.insert(doc)
 
 if __name__ == '__main__':
     #连接数据库
-    con = pymongo.MongoClient('localhost', 27017)
-    col1 = con.Lawcase.codeofca
-    col2 = con.Lawcase.tokendispute
+    con = pymongo.MongoClient('192.168.68.11', 20000)
+    col1 = con.lawCase.codeofca
+    col2 = con.lawCase.tokendispute
 
     dic = getFromMongo(col1)
 

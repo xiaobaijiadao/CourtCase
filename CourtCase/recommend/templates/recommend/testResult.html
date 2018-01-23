@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试效果展示</title>
+
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+</head>
+<body>
+
+<ul class="nav nav-tabs" style="margin: 50px 100px">
+	<li id="statutep" class="active rate chart" style="margin-left: 5%"><a style="cursor:default">法条precision</a></li>
+	<li id="statuter" class="rate chart"><a style="cursor:default">法条recall</a></li>
+    <li id="statutepr" class="pr chart"><a style="cursor:default">法条P-R</a></li>
+    <li id="casep" class="rate chart"><a style="cursor:default">案件precision</a></li>
+</ul>
+
+<div id="container" style="width: 1100px; height: 550px; margin: 0 auto"></div>
+
+<script language="JavaScript">
+$(document).ready(function(){
+    var chart = {
+        chart : {
+            type: 'column'
+        },
+        title : {
+            text: '法条效果展示-precision'
+        },
+        xAxis : {
+            title: {
+                text: 'precision'
+            },
+            categories: ['0~0.1','0.1~0.2','0.2~0.3','0.3~0.4','0.4~0.5','0.5~0.6','0.6~0.7','0.7~0.8','0.8~0.9','0.9~1'],
+            crosshair: true
+        },
+        yAxis : {
+            title: {
+                text: 'num'
+            }
+        },
+        tooltip : {
+            enabled: true,
+            formatter: function() {
+            return '<b>'+ this.x +': '+ this.y;
+            }
+        },
+        legend : {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series : [
+            {
+                name: '关键字-10',
+                data: {{ t10k|safe }}
+            },
+            {
+                name: '关键字-20',
+                data: {{ t20k|safe }}
+            },
+            {
+                name: '关键字-50',
+                data: {{ t50k|safe }}
+            },
+            {
+                name: 'TFIDF-10',
+                data: {{ t10t|safe }}
+            },
+            {
+                name: 'TFIDF-20',
+                data: {{ t20t|safe }}
+            },
+            {
+                name: 'TFIDF-50',
+                data: {{ t50t|safe }}
+            },
+            {
+                name: 'LDA-10',
+                data: {{ t10l|safe }}
+            },
+            {
+                name: 'LDA-20',
+                data: {{ t20l|safe }}
+            },
+            {
+                name: 'LDA-50',
+                data: {{ t50l|safe }}
+            }
+        ],
+    }
+    $('#container').highcharts(chart);
+
+    $(".chart").click(function(){
+        if($(this).hasClass('active')){
+            return;
+        }
+        else{
+            $(".active").removeClass("active");
+            $(this).addClass("active");
+            $('#container').html('');
+            if($(this).hasClass('rate')){
+                var id = $(this).attr('id')
+                switch (id){
+                    case 'statutep':
+                        $.getJSON("{% url 'recommend:statuteP' %}", function(ret){
+                            chart = setRateNumChart(ret, '法条效果展示-precision', 'precision', 'num');
+                            $('#container').highcharts(chart);
+                        });
+                        break;
+                    case 'statuter':
+                        $.getJSON("{% url 'recommend:statuteR' %}", function(ret){
+                            chart = setRateNumChart(ret, '法条效果展示-recall', 'recall', 'num');
+                            $('#container').highcharts(chart);
+                        });
+                        break;
+                    case 'casep':
+                        $.getJSON("{% url 'recommend:caseP' %}", function(ret){
+                            chart = setRateNumChart(ret, '案件效果展示-precision', 'precision', 'num');
+                            $('#container').highcharts(chart);
+                        });
+                        break;
+                    default:
+                        alert("error");
+                }
+            }
+            else{
+                $.getJSON("{% url 'recommend:statutePR' %}", function(ret){
+                    chart = setP_RChart(ret, '法条效果展示 P-R', 'recall', 'precision');
+                    $('#container').highcharts(chart);
+                });
+            }
+
+        }
+    });
+});
+
+function setRateNumChart(ret, title, xTitle, yTitle)
+{
+    var chart = {
+        chart : {
+            type: 'column'
+        },
+        title : {
+            text: title
+        },
+        xAxis : {
+            title: {
+                text: xTitle
+            },
+            categories: ['0~0.1','0.1~0.2','0.2~0.3','0.3~0.4','0.4~0.5','0.5~0.6','0.6~0.7','0.7~0.8','0.8~0.9','0.9~1'],
+            crosshair: true
+        },
+        yAxis : {
+            title: {
+                text: yTitle
+            }
+        },
+        tooltip : {
+            enabled: true,
+            formatter: function() {
+            return '<b>'+ this.x +': '+ this.y;
+            }
+        },
+        legend : {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series : [
+            {
+                name: '关键字-10',
+                data: ret.t10k
+            },
+            {
+                name: '关键字-20',
+                data: ret.t20k
+            },
+            {
+                name: '关键字-50',
+                data: ret.t50k
+            },
+            {
+                name: 'TFIDF-10',
+                data: ret.t10t
+            },
+            {
+                name: 'TFIDF-20',
+                data: ret.t20t
+            },
+            {
+                name: 'TFIDF-50',
+                data: ret.t50t
+            },
+            {
+                name: 'LDA-10',
+                data: ret.t10l
+            },
+            {
+                name: 'LDA-20',
+                data: ret.t20l
+            },
+            {
+                name: 'LDA-50',
+                data: ret.t50l
+            }
+        ],
+    };
+
+    return chart
+}
+
+function setP_RChart(ret, title, xTitle, yTitle)
+{
+    var chart = {
+        chart : {
+            type: 'scatter',
+            zoomType: 'xy'
+        },
+        title : {
+            text: title
+        },
+        xAxis : {
+            title: {
+                text: xTitle
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true
+        },
+        yAxis : {
+            title: {
+                text: yTitle
+            }
+        },
+        tooltip : {
+            enabled: true,
+            formatter: function() {
+            return '<b>'+ this.x +'-'+ this.y;
+            }
+        },
+        legend : {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions : {
+            scatter: {
+                marker: {
+                    radius: 5,
+                    states: {
+                       hover: {
+                          enabled: true,
+                          lineColor: 'rgb(100,100,100)'
+                       }
+                    }
+                },
+                states: {
+                    hover: {
+                       marker: {
+                          enabled: false
+                       }
+                    }
+                },
+            }
+        },
+        series : [
+            {
+                name: '关键字-10',
+                data: ret.t10k
+            },
+            {
+                name: '关键字-20',
+                data: ret.t20k
+            },
+            {
+                name: '关键字-50',
+                data: ret.t50k
+            },
+            {
+                name: 'TFIDF-10',
+                data: ret.t10t
+            },
+            {
+                name: 'TFIDF-20',
+                data: ret.t20t
+            },
+            {
+                name: 'TFIDF-50',
+                data: ret.t50t
+            },
+            {
+                name: 'LDA-10',
+                data: ret.t10l
+            },
+            {
+                name: 'LDA-20',
+                data: ret.t20l
+            },
+            {
+                name: 'LDA-50',
+                data: ret.t50l
+            }
+        ],
+    };
+    alert(ret.t50l);
+    return chart
+}
+</script>
+
+</body>
+</html>
