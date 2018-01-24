@@ -139,7 +139,8 @@ def test(request, pwd):
         print("enter test************")
         col1 = settings.DB_CON.divorceCase.lawcase
         col2 = settings.DB_CON.divorceCase.lawreference
-        col3 = settings.DB_CON.divorceCase.searchPerform1
+        col3 = settings.DB_CON.divorceCase.searchPerform
+        col4 = settings.DB_CON.divorceCase.searchEvaluate
 
         i = 1
         cur = col1.find({"tag": "3"}, no_cursor_timeout=True)
@@ -169,9 +170,48 @@ def test(request, pwd):
             print("第 %d 次写入" % i)
             i += 1
         cur.close()
-        print('finish!')
+
+        res = genEvaluate()
+        if(res):
+            print('finish!')
+        else:
+            return HttpResponse("faild!")
     else:
         return HttpResponse("faild!")
+
+
+def genEvaluate(request, pwd):
+    if pwd == "p123456":
+        col = settings.DB_CON.divorceCase.searchEvaluate
+        resList = []
+
+        sp = searchPerform()
+        statuteEvaluate = statutePerform(sp).genEvaluate()
+        resList.append({
+            'name' : 'statutePrecison',
+            'method' : statuteEvaluate['precision']
+        })
+        resList.append({
+            'name': 'statuteRecall',
+            'method': statuteEvaluate['recall']
+        })
+        resList.append({
+            'name': 'statuteF1',
+            'method': statuteEvaluate['f1']
+        })
+
+        caseEvaluate = casePerform(sp).genEvaluate()
+        resList.append({
+            'name': 'casePrecision',
+            'method': caseEvaluate['precision'],
+        })
+
+        col.insert(resList)
+
+        return True
+    else:
+        return HttpResponse('faild!')
+
 
 
 def test_res_display(request):

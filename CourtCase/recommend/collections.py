@@ -152,3 +152,19 @@ class searchPerform:
         cur.close()
 
         return statuteSetList
+
+class searchEvaluate:
+    def __init__(self):
+        self.col = settings.DB_CON.divorceCase.searchEvaluate
+
+    def getRateByName(self, name):
+        res = []
+        for item in self.col.find_one({"name" : name})['method']:
+            res.append(item['value'])
+        return res
+
+    def getMeanRateByName(self, name):
+        res = []
+        for item in self.col.find_one({"name" : name})['method']:
+            res.append(item['meanValue'])
+        return res

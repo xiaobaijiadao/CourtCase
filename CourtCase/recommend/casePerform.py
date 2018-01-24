@@ -1,9 +1,14 @@
-from .collections import searchPerform
+from .collections import searchPerform, searchEvaluate
 
 class casePerform():
+    tactics = ['k10', 'k20', 'k50', 't10', 't20', 't50', 'l10', 'l20', 'l50']
+
     def __init__(self, sp):
-        self.referenceNum = sp.getReferenceNum()
-        self.rnAndCc = sp.getReferenceNumAndCoverCount()
+        self.sp = sp
+
+    def getDataFromDB(self):
+        self.referenceNum = self.sp.getReferenceNum()
+        self.rnAndCc = self.sp.getReferenceNumAndCoverCount()
 
     def computePrecision(self, tag):
         # tag为长度为50的标记list,记录搜索结果是否合格
@@ -35,6 +40,43 @@ class casePerform():
 
         return top10Precision, top20Precision, top50Precision
 
+    def genEvaluate(self):
+        result = {
+            'precision' : [
+                {
+                    'tacticsName' : i,
+                    'value' : [],
+                    'meanValue' : 0,
+                } for i in casePerform.tactics
+            ],
+        }
+
+        self.getDataFromDB()
+        for rn, rk, rt, rl, ck, ct, cl in \
+                zip(self.referenceNum, self.rnAndCc['ReferenceNumByKeyword'], self.rnAndCc['ReferenceNumByTfidf'],
+                    self.rnAndCc['ReferenceNumByLda'], self.rnAndCc['CoverCountByKeyword'],
+                    self.rnAndCc['CoverCountByTfidf'],
+                    self.rnAndCc['CoverCountByLda']):
+            k10p, k20p, k50p = self.getPrecision(rn, rk, ck)
+            t10p, t20p, t50p = self.getPrecision(rn, rt, ct)
+            l10p, l20p, l50p = self.getPrecision(rn, rl, cl)
+
+            result['precision'][0]['value'].append(k10p)
+            result['precision'][1]['value'].append(k20p)
+            result['precision'][2]['value'].append(k50p)
+            result['precision'][3]['value'].append(t10p)
+            result['precision'][4]['value'].append(t20p)
+            result['precision'][5]['value'].append(t50p)
+            result['precision'][6]['value'].append(l10p)
+            result['precision'][7]['value'].append(l20p)
+            result['precision'][8]['value'].append(l50p)
+
+        for value in result.values():
+            for item in value:
+                item['meanValue'] = round(sum(item['value'])/len(item['value']), 3)
+
+        return result
+
     def formatPrecision(self, precisionlist):
         res = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         for p in precisionlist:
@@ -46,44 +88,18 @@ class casePerform():
 
     def getCasePerform(self):
         res = dict()
-        top10PrecisionByKeywordList = []
-        top20PrecisionByKeywordList = []
-        top50PrecisionByKeywordList = []
-        top10PrecisionByTfidfList = []
-        top20PrecisionByTfidfList = []
-        top50PrecisionByTfidfList = []
-        top10PrecisionByLdaList = []
-        top20PrecisionByLdaList = []
-        top50PrecisionByLdaList = []
 
-        for rn, rk, rt, rl, ck, ct, cl in \
-                zip(self.referenceNum, self.rnAndCc['ReferenceNumByKeyword'], self.rnAndCc['ReferenceNumByTfidf'],
-                    self.rnAndCc['ReferenceNumByLda'], self.rnAndCc['CoverCountByKeyword'], self.rnAndCc['CoverCountByTfidf'],
-                    self.rnAndCc['CoverCountByLda']):
-            p10k, p20k, p50k = self.getPrecision(rn, rk, ck)
-            p10t, p20t, p50t = self.getPrecision(rn, rt, ct)
-            p10l, p20l, p50l = self.getPrecision(rn, rl, cl)
+        data = searchEvaluate().getRateByName('casePrecision')
 
-            top10PrecisionByKeywordList.append(p10k)
-            top20PrecisionByKeywordList.append(p20k)
-            top50PrecisionByKeywordList.append(p20k)
-
-            top10PrecisionByTfidfList.append(p10t)
-            top20PrecisionByTfidfList.append(p20t)
-            top50PrecisionByTfidfList.append(p50t)
-
-            top10PrecisionByLdaList.append(p10l)
-            top20PrecisionByLdaList.append(p20l)
-            top50PrecisionByLdaList.append(p50l)
-
-        res['t10k'] = self.formatPrecision(top10PrecisionByKeywordList)
-        res['t20k'] = self.formatPrecision(top20PrecisionByKeywordList)
-        res['t50k'] = self.formatPrecision(top50PrecisionByKeywordList)
-        res['t10t'] = self.formatPrecision(top10PrecisionByTfidfList)
-        res['t20t'] = self.formatPrecision(top20PrecisionByTfidfList)
-        res['t50t'] = self.formatPrecision(top50PrecisionByTfidfList)
-        res['t10l'] = self.formatPrecision(top10PrecisionByLdaList)
-        res['t20l'] = self.formatPrecision(top20PrecisionByLdaList)
-        res['t50l'] = self.formatPrecision(top50PrecisionByLdaList)
+        res['t10k'] = self.formatPrecision(data[0])
+        res['t20k'] = self.formatPrecision(data[1])
+        res['t50k'] = self.formatPrecision(data[2])
+        res['t10t'] = self.formatPrecision(data[3])
+        res['t20t'] = self.formatPrecision(data[4])
+        res['t50t'] = self.formatPrecision(data[5])
+        res['t10l'] = self.formatPrecision(data[6])
+        res['t20l'] = self.formatPrecision(data[7])
+        res['t50l'] = self.formatPrecision(data[8])
 
         return res
+
