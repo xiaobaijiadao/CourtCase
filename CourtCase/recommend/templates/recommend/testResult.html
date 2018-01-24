@@ -130,7 +130,7 @@ $(document).ready(function(){
             }
             else{
                 $.getJSON("{% url 'recommend:statutePR' %}", function(ret){
-                    chart = setP_RChart(ret, '法条效果展示 P-R', 'recall', 'precision');
+                    chart = setMeanPRFChart(ret, '法条效果展示 P-R', '策略', '均值');
                     $('#container').highcharts(chart);
                 });
             }
@@ -215,12 +215,11 @@ function setRateNumChart(ret, title, xTitle, yTitle)
     return chart
 }
 
-function setP_RChart(ret, title, xTitle, yTitle)
+function setMeanPRFChart(ret, title, xTitle, yTitle)
 {
     var chart = {
         chart : {
-            type: 'scatter',
-            zoomType: 'xy'
+            type: 'column'
         },
         title : {
             text: title
@@ -229,9 +228,8 @@ function setP_RChart(ret, title, xTitle, yTitle)
             title: {
                 text: xTitle
             },
-            startOnTick: true,
-            endOnTick: true,
-            showLastLabel: true
+            categories: ['关键字10','关键字20','关键字50','Tfidf10','Tfidf20','Tfidf50','LDA10','LDA20','LDA50'],
+            crosshair: true
         },
         yAxis : {
             title: {
@@ -241,7 +239,7 @@ function setP_RChart(ret, title, xTitle, yTitle)
         tooltip : {
             enabled: true,
             formatter: function() {
-            return '<b>'+ this.x +'-'+ this.y;
+            return '<b>'+ this.y;
             }
         },
         legend : {
@@ -250,66 +248,21 @@ function setP_RChart(ret, title, xTitle, yTitle)
             verticalAlign: 'middle',
             borderWidth: 0
         },
-        plotOptions : {
-            scatter: {
-                marker: {
-                    radius: 5,
-                    states: {
-                       hover: {
-                          enabled: true,
-                          lineColor: 'rgb(100,100,100)'
-                       }
-                    }
-                },
-                states: {
-                    hover: {
-                       marker: {
-                          enabled: false
-                       }
-                    }
-                },
-            }
-        },
         series : [
             {
-                name: '关键字-10',
-                data: ret.t10k
+                name: 'precision',
+                data: ret.precision
             },
             {
-                name: '关键字-20',
-                data: ret.t20k
+                name: 'recall',
+                data: ret.recall
             },
             {
-                name: '关键字-50',
-                data: ret.t50k
+                name: 'F1',
+                data: ret.f1
             },
-            {
-                name: 'TFIDF-10',
-                data: ret.t10t
-            },
-            {
-                name: 'TFIDF-20',
-                data: ret.t20t
-            },
-            {
-                name: 'TFIDF-50',
-                data: ret.t50t
-            },
-            {
-                name: 'LDA-10',
-                data: ret.t10l
-            },
-            {
-                name: 'LDA-20',
-                data: ret.t20l
-            },
-            {
-                name: 'LDA-50',
-                data: ret.t50l
-            }
         ],
     };
-    alert(ret.t50l);
     return chart
 }
 </script>

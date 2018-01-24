@@ -66,6 +66,20 @@ class statutePerform():
 
         return res
 
+    def getmeanPRF(self, ratelist):
+        P = 0
+        R = 0
+        F1 = 0
+        num = 0
+
+        for rate in ratelist:
+            P += rate[1]
+            R += rate[0]
+            F1 += 2 * rate[0] * rate[1] / (rate[0] + rate[1]) if rate[0] + rate[1] !=0 else 0
+            num += 1
+
+        return round(P / num, 3), round(R / num, 3), round(F1 / num, 3)
+
     def getStatutePerform(self, option):
         res = dict()
 
@@ -94,14 +108,32 @@ class statutePerform():
             l20List.append(self.getPrecisionAndRecall(r, rl20, option))
             l50List.append(self.getPrecisionAndRecall(r, rl50, option))
 
-        res['t10k'] = self.formatRate(k10List, option)
-        res['t20k'] = self.formatRate(k20List, option)
-        res['t50k'] = self.formatRate(k50List, option)
-        res['t10t'] = self.formatRate(t10List, option)
-        res['t20t'] = self.formatRate(t20List, option)
-        res['t50t'] = self.formatRate(t50List, option)
-        res['t10l'] = self.formatRate(l10List, option)
-        res['t20l'] = self.formatRate(l20List, option)
-        res['t50l'] = self.formatRate(l50List, option)
+        if option == 0 or option == 1:
+            res['t10k'] = self.formatRate(k10List, option)
+            res['t20k'] = self.formatRate(k20List, option)
+            res['t50k'] = self.formatRate(k50List, option)
+            res['t10t'] = self.formatRate(t10List, option)
+            res['t20t'] = self.formatRate(t20List, option)
+            res['t50t'] = self.formatRate(t50List, option)
+            res['t10l'] = self.formatRate(l10List, option)
+            res['t20l'] = self.formatRate(l20List, option)
+            res['t50l'] = self.formatRate(l50List, option)
+        else:
+            precision = [0 for i in range(9)]
+            recall = [0 for i in range(9)]
+            f1 = [0 for i in range(9)]
+            precision[0], recall[0], f1[0] = self.getmeanPRF(k10List)
+            precision[1], recall[1], f1[1] = self.getmeanPRF(k20List)
+            precision[2], recall[2], f1[2] = self.getmeanPRF(k50List)
+            precision[3], recall[3], f1[3] = self.getmeanPRF(t10List)
+            precision[4], recall[4], f1[4] = self.getmeanPRF(t20List)
+            precision[5], recall[5], f1[5] = self.getmeanPRF(t50List)
+            precision[6], recall[6], f1[6] = self.getmeanPRF(l10List)
+            precision[7], recall[7], f1[7] = self.getmeanPRF(l20List)
+            precision[8], recall[8], f1[8] = self.getmeanPRF(l50List)
+
+            res['precision'] = precision
+            res['recall'] = recall
+            res['f1'] = f1
 
         return res
