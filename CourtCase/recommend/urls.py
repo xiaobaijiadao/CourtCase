@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^list/$', views.list, name='recommend_list'),
     url(r'^searchbykey/$', views.list, name='search_list'),
     url(r'^display/(?P<case_id>[0-9a-z]+)$', views.display, name='recommend_display'),
-    url(r'^test1/(?P<pwd>[0-9a-z]+)$', views.test),
+    url(r'^test1/(?P<pwd>[0-9a-z]+)/(?P<option>[23])$', views.test),
     url(r'^test2/(?P<pwd>[0-9a-z]+)$', views.genEvaluate),
     url(r'^testres/$', views.test_res_display, name='test_res'),
     url(r'^testres/caseP/$', views.case_p_display, name='caseP'),

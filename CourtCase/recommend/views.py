@@ -6,7 +6,7 @@ from django.conf import settings
 from time import clock
 import pymongo, json
 
-from .collections import paragraph, lawcase, searchPerform
+from .collections import paragraph, lawcase, searchPerformTest
 from .casePerform import casePerform
 from .statutePerform import statutePerform
 from .roughExtract import roughExtract
@@ -134,17 +134,17 @@ def gettestresult(searchRes, option, col, referenceStandard):
     return result
 
 
-def test(request, pwd):
+def test(request, pwd, option):
     if pwd == "p123456":
         print("enter test************")
         col1 = settings.DB_CON.divorceCase.lawcase
         col2 = settings.DB_CON.divorceCase.lawreference
-        col3 = settings.DB_CON.divorceCase.searchPerform
-        col4 = settings.DB_CON.divorceCase.searchEvaluate
+        col3 = settings.DB_CON.divorceCase.searchPerformTest if option == '3' else settings.DB_CON.divorceCase.searchPerformVerify
 
         i = 1
-        cur = col1.find({"tag": "3"}, no_cursor_timeout=True)
-        for case in col1.find({"tag": "3"}):
+
+        cur = col1.find({"tag": option}, no_cursor_timeout=True)
+        for case in cur:
             referenceStandard = [ref['name'].strip() + ref['levelone'].strip() \
                                  for ref in col2.find_one({"fullTextId": case['fullTextId']})['references']]
 
@@ -170,12 +170,7 @@ def test(request, pwd):
             print("第 %d 次写入" % i)
             i += 1
         cur.close()
-
-        res = genEvaluate()
-        if(res):
-            print('finish!')
-        else:
-            return HttpResponse("faild!")
+        print('finish!')
     else:
         return HttpResponse("faild!")
 
@@ -185,7 +180,7 @@ def genEvaluate(request, pwd):
         col = settings.DB_CON.divorceCase.searchEvaluate
         resList = []
 
-        sp = searchPerform()
+        sp = searchPerformTest()
         statuteEvaluate = statutePerform(sp).genEvaluate()
         resList.append({
             'name' : 'statutePrecison',
@@ -215,30 +210,30 @@ def genEvaluate(request, pwd):
 
 
 def test_res_display(request):
-    sp = searchPerform()
+    sp = searchPerformTest()
     res = statutePerform(sp).getStatutePerform(0)
     return render(request, 'recommend/testResult.html', res)
 
 
 def case_p_display(request):
-    sp = searchPerform()
+    sp = searchPerformTest()
     res = casePerform(sp).getCasePerform()
     return JsonResponse(res)
 
 
 def statute_p_display(request):
-    sp = searchPerform()
+    sp = searchPerformTest()
     res = statutePerform(sp).getStatutePerform(0)
     return JsonResponse(res)
 
 
 def statute_r_display(request):
-    sp = searchPerform()
+    sp = searchPerformTest()
     res = statutePerform(sp).getStatutePerform(1)
     return JsonResponse(res)
 
 
 def statute_p_r_display(request):
-    sp = searchPerform()
+    sp = searchPerformTest()
     res = statutePerform(sp).getStatutePerform(2)
     return JsonResponse(res)

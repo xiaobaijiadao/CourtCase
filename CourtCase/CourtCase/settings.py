@@ -129,7 +129,7 @@ STATICFILES_DIRS = (
 
 # LDA模型
 LDA_MODEL = models.LdaModel.load(os.path.join(BASE_DIR, 'recommend/model/lda.model'))
-TEXT2VEC = models.LdaModel.load(os.path.join(BASE_DIR, 'recommend/model/lda.model.id2word'))
+TEXT2VEC = models.LdaModel.load(os.path.join(BASE_DIR, 'recommend/model/lda.dct'))
 
 # mongo数据库
 # DB_HOST = '192.168.68.11'

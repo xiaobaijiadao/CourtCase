@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8be5234b-7bb1-4c35-a081-998d4134eb35" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CourtCase/CourtCase/settings.py" afterPath="$PROJECT_DIR$/CourtCase/CourtCase/settings.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CourtCase/recommend/casePerform.py" afterPath="$PROJECT_DIR$/CourtCase/recommend/casePerform.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CourtCase/recommend/collections.py" afterPath="$PROJECT_DIR$/CourtCase/recommend/collections.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CourtCase/recommend/statutePerform.py" afterPath="$PROJECT_DIR$/CourtCase/recommend/statutePerform.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CourtCase/recommend/urls.py" afterPath="$PROJECT_DIR$/CourtCase/recommend/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CourtCase/recommend/views.py" afterPath="$PROJECT_DIR$/CourtCase/recommend/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DbHanding/lawcase/genLDA.py" afterPath="$PROJECT_DIR$/DbHanding/lawcase/genLDA.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,21 +19,65 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CourtCase/recommend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1505">
-              <caret line="204" column="31" lean-forward="true" selection-start-line="204" selection-start-column="31" selection-end-line="204" selection-end-column="31" />
+            <state relative-caret-position="801">
+              <caret line="142" column="0" lean-forward="true" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#35#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AJvec.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DbHanding/AJvec.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="594">
+              <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="genLDA.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DbHanding/lawcase/genLDA.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="924">
+              <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#48#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CourtCase/CourtCase/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2202">
-              <caret line="138" column="0" lean-forward="false" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
+            <state relative-caret-position="483">
+              <caret line="125" column="20" lean-forward="true" selection-start-line="125" selection-start-column="20" selection-end-line="125" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dictionary.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DbHanding/dictionary.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="621">
+              <caret line="38" column="54" lean-forward="false" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="roughExtract.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CourtCase/recommend/roughExtract.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-332">
+              <caret line="85" column="0" lean-forward="true" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -42,18 +86,8 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CourtCase/recommend/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="15" column="40" lean-forward="false" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AJSegment.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DbHanding/AJSegment.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1350">
-              <caret line="55" column="54" lean-forward="false" selection-start-line="55" selection-start-column="29" selection-end-line="55" selection-end-column="54" />
+            <state relative-caret-position="270">
+              <caret line="14" column="41" lean-forward="true" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -80,25 +114,15 @@
       <file leaf-file-name="statutePerform.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CourtCase/recommend/statutePerform.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="167" column="70" lean-forward="true" selection-start-line="167" selection-start-column="16" selection-end-line="167" selection-end-column="70" />
+            <state relative-caret-position="-228">
+              <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding>
-                <element signature="e#246#1000#0" expanded="false" />
-                <element signature="e#1057#1228#0" expanded="false" />
-                <element signature="e#1298#1818#0" expanded="false" />
-                <element signature="e#1864#2183#0" expanded="false" />
-                <element signature="e#2220#5562#0" expanded="false" />
+                <element signature="e#231#985#0" expanded="false" />
+                <element signature="e#1042#1213#0" expanded="false" />
+                <element signature="e#1283#1803#0" expanded="false" />
+                <element signature="e#1849#2168#0" expanded="false" />
+                <element signature="e#2205#5547#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="collections.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CourtCase/recommend/collections.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4020">
-              <caret line="151" column="19" lean-forward="true" selection-start-line="151" selection-start-column="19" selection-end-line="151" selection-end-column="19" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -106,12 +130,12 @@
       <file leaf-file-name="casePerform.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CourtCase/recommend/casePerform.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+            <state relative-caret-position="-105">
+              <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding>
-                <element signature="e#243#350#0" expanded="false" />
-                <element signature="e#397#597#0" expanded="false" />
-                <element signature="e#1337#2839#0" expanded="false" />
+                <element signature="e#228#335#0" expanded="false" />
+                <element signature="e#382#582#0" expanded="false" />
+                <element signature="e#1322#2824#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -174,16 +198,17 @@
         <option value="$PROJECT_DIR$/CourtCase/recommend/searchStrategy.py" />
         <option value="$PROJECT_DIR$/CourtCase/recommend/roughExtract.py" />
         <option value="$PROJECT_DIR$/CourtCase/recommend/templates/recommend/load.html" />
-        <option value="$PROJECT_DIR$/CourtCase/CourtCase/settings.py" />
         <option value="$PROJECT_DIR$/CourtCase/recommend/templates/casePerform.py" />
         <option value="$PROJECT_DIR$/CourtCase/recommend/templates/recommend/index.html" />
         <option value="$PROJECT_DIR$/CourtCase/recommend/tests.py" />
         <option value="$PROJECT_DIR$/CourtCase/recommend/templates/recommend/testResult.html" />
+        <option value="$PROJECT_DIR$/CourtCase/recommend/collections.py" />
+        <option value="$PROJECT_DIR$/CourtCase/recommend/casePerform.py" />
+        <option value="$PROJECT_DIR$/CourtCase/recommend/statutePerform.py" />
         <option value="$PROJECT_DIR$/CourtCase/recommend/urls.py" />
         <option value="$PROJECT_DIR$/CourtCase/recommend/views.py" />
-        <option value="$PROJECT_DIR$/CourtCase/recommend/statutePerform.py" />
-        <option value="$PROJECT_DIR$/CourtCase/recommend/casePerform.py" />
-        <option value="$PROJECT_DIR$/CourtCase/recommend/collections.py" />
+        <option value="$PROJECT_DIR$/CourtCase/CourtCase/settings.py" />
+        <option value="$PROJECT_DIR$/DbHanding/lawcase/genLDA.py" />
       </list>
     </option>
   </component>
@@ -240,6 +265,17 @@
               <item name="CourtCase" type="462c0819:PsiDirectoryNode" />
               <item name="recommend" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CourtCase" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CourtCase" type="462c0819:PsiDirectoryNode" />
+              <item name="DbHanding" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CourtCase" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CourtCase" type="462c0819:PsiDirectoryNode" />
+              <item name="DbHanding" type="462c0819:PsiDirectoryNode" />
+              <item name="lawcase" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -422,7 +458,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/DbHanding/IndexTable.py" />
     <entry file="file://$PROJECT_DIR$/CourtCase/recommend/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1593">
@@ -507,24 +542,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DbHanding/dictionary.log" />
-    <entry file="file://$PROJECT_DIR$/DbHanding/dictionary.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="38" column="54" lean-forward="false" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DbHanding/CaseDbSource.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-296">
           <caret line="14" column="6" lean-forward="false" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DbHanding/AJvec.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="783">
-          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -576,13 +597,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/roughExtract.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="85" column="0" lean-forward="true" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CourtCase/recommend/templates/recommend/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-250">
@@ -620,11 +634,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DbHanding/AJSegment1.py" />
     <entry file="file://$PROJECT_DIR$/DbHanding/IndexTable.py" />
+    <entry file="file://$PROJECT_DIR$/DbHanding/AJJBQKtoken.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2398">
+          <caret line="102" column="31" lean-forward="false" selection-start-line="102" selection-start-column="31" selection-end-line="102" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DbHanding/AJSegment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1350">
-          <caret line="55" column="54" lean-forward="false" selection-start-line="55" selection-start-column="29" selection-end-line="55" selection-end-column="54" />
+        <state relative-caret-position="69">
+          <caret line="55" column="54" lean-forward="false" selection-start-line="55" selection-start-column="54" selection-end-line="55" selection-end-column="54" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/collections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="99" column="23" lean-forward="false" selection-start-line="99" selection-start-column="23" selection-end-line="99" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/casePerform.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-105">
+          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="e#228#335#0" expanded="false" />
+            <element signature="e#382#582#0" expanded="false" />
+            <element signature="e#1322#2824#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -644,69 +686,77 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="15" column="40" lean-forward="false" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1505">
-          <caret line="204" column="31" lean-forward="true" selection-start-line="204" selection-start-column="31" selection-end-line="204" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CourtCase/recommend/statutePerform.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="167" column="70" lean-forward="true" selection-start-line="167" selection-start-column="16" selection-end-line="167" selection-end-column="70" />
+        <state relative-caret-position="-228">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
-            <element signature="e#246#1000#0" expanded="false" />
-            <element signature="e#1057#1228#0" expanded="false" />
-            <element signature="e#1298#1818#0" expanded="false" />
-            <element signature="e#1864#2183#0" expanded="false" />
-            <element signature="e#2220#5562#0" expanded="false" />
+            <element signature="e#231#985#0" expanded="false" />
+            <element signature="e#1042#1213#0" expanded="false" />
+            <element signature="e#1283#1803#0" expanded="false" />
+            <element signature="e#1849#2168#0" expanded="false" />
+            <element signature="e#2205#5547#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/casePerform.py">
+    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#243#350#0" expanded="false" />
-            <element signature="e#397#597#0" expanded="false" />
-            <element signature="e#1337#2839#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/collections.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4020">
-          <caret line="151" column="19" lean-forward="true" selection-start-line="151" selection-start-column="19" selection-end-line="151" selection-end-column="19" />
+        <state relative-caret-position="270">
+          <caret line="14" column="41" lean-forward="true" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DbHanding/AJJBQKtoken.py">
+    <entry file="file://$PROJECT_DIR$/DbHanding/AJvec.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2398">
-          <caret line="102" column="31" lean-forward="false" selection-start-line="102" selection-start-column="31" selection-end-line="102" selection-end-column="31" />
+        <state relative-caret-position="594">
+          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DbHanding/dictionary.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="621">
+          <caret line="38" column="54" lean-forward="false" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DbHanding/lawcase/genLDA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="924">
+          <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/roughExtract.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-332">
+          <caret line="85" column="0" lean-forward="true" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CourtCase/CourtCase/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2202">
-          <caret line="138" column="0" lean-forward="false" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
+        <state relative-caret-position="483">
+          <caret line="125" column="20" lean-forward="true" selection-start-line="125" selection-start-column="20" selection-end-line="125" selection-end-column="20" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CourtCase/recommend/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="801">
+          <caret line="142" column="0" lean-forward="true" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

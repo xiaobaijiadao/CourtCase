@@ -43,7 +43,6 @@ def getDis(doc_topics, num_topics):
 
 def write2mongo(col, idList, disList):
     for id,dis in zip(idList, disList):
-        print(id, dis)
         col.insert({
             "fullTextId" : id,
             "dis" : dis,
@@ -62,6 +61,7 @@ if __name__ == '__main__':
 
     print('build dictionary')
     dictionary = corpora.Dictionary(caselist)
+    dictionary.save('lda.dct')
     dict_len = len(dictionary)
     # transform the whole texts to sparse vector
     corpus = [dictionary.doc2bow(case) for case in caselist]

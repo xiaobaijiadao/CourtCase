@@ -1,4 +1,4 @@
-from .collections import searchPerform, searchEvaluate
+from .collections import searchEvaluate
 
 class statutePerform():
     tactics = ['k10', 'k20', 'k50', 't10', 't20', 't50', 'l10', 'l20', 'l50']

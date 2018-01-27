@@ -97,9 +97,9 @@ class dispute:
 
         return res
 
-class searchPerform:
+class searchPerformTest:
     def __init__(self):
-        self.col = settings.DB_CON.divorceCase.searchPerform
+        self.col = settings.DB_CON.divorceCase.searchPerformTest
 
     def getReferenceNum(self):
         refNum = [len(item['ref']) for item in self.col.find()]
