@@ -102,4 +102,3 @@ class casePerform():
         res['t50l'] = self.formatPrecision(data[8])
 
         return res
-

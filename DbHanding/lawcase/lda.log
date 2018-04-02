@@ -1,0 +1,27 @@
+Mon, 29 Jan 2018 16:01:08 dictionary.py[line:116] INFO adding document #0 to Dictionary(0 unique tokens: [])
+Mon, 29 Jan 2018 16:01:08 dictionary.py[line:123] INFO built Dictionary(1025 unique tokens: ['收据', '升学', '债务', '权证', '可用']...) from 50 documents (total 4640 corpus positions)
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:306] INFO using serial LDA version on this node
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:623] INFO running online (single-pass) LDA training, 6 topics, 1 passes over the supplied corpus of 50 documents, updating model once every 50 documents, evaluating perplexity every 50 documents, iterating 50x with a convergence threshold of 0.001000
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:628] WARNING too few updates, training might not converge; consider increasing the number of passes or iterations to improve accuracy
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:768] DEBUG bound: at document #0
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:535] INFO -11.721 per-word bound, 3375.0 perplexity estimate based on a held-out corpus of 50 documents with 4640 words
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:671] INFO PROGRESS: pass 0, at document #50/50
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:418] DEBUG performing inference on a chunk of 50 documents
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:473] DEBUG 3/50 documents converged within 50 iterations
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:725] DEBUG updating topics
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:840] INFO topic #5 (0.010): 0.040*"离婚" + 0.037*"双方" + 0.028*"生活" + 0.025*"生育" + 0.023*"结婚" + 0.015*"要求" + 0.014*"请求" + 0.014*"感情" + 0.014*"抚养" + 0.012*"女儿"
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:840] INFO topic #3 (0.010): 0.029*"离婚" + 0.029*"双方" + 0.028*"生活" + 0.026*"结婚" + 0.021*"夫妻感情" + 0.020*"登记" + 0.018*"生育" + 0.017*"共同" + 0.015*"家庭" + 0.013*"夫妻"
+Mon, 29 Jan 2018 16:01:08 ldamodel.py[line:840] INFO topic #0 (0.010): 0.046*"离婚" + 0.042*"双方" + 0.027*"结婚" + 0.025*"生活" + 0.019*"夫妻感情" + 0.019*"生育" + 0.015*"共同" + 0.012*"抚养" + 0.012*"要求" + 0.012*"破裂"
+Mon, 29 Jan 2018 16:01:09 ldamodel.py[line:840] INFO topic #4 (0.010): 0.050*"离婚" + 0.022*"结婚" + 0.021*"要求" + 0.020*"法院" + 0.017*"双方" + 0.013*"登记" + 0.012*"生活" + 0.012*"依法" + 0.011*"感情" + 0.011*"男孩"
+Mon, 29 Jan 2018 16:01:09 ldamodel.py[line:840] INFO topic #1 (0.010): 0.046*"离婚" + 0.034*"孩子" + 0.025*"双方" + 0.019*"抚养" + 0.018*"法院" + 0.016*"生育" + 0.016*"结婚" + 0.015*"夫妻" + 0.015*"登记" + 0.013*"生活"
+Mon, 29 Jan 2018 16:01:09 ldamodel.py[line:735] INFO topic diff=24.104742, rho=1.000000
+Mon, 29 Jan 2018 16:01:09 utils.py[line:276] INFO loading LdaModel object from lda.model
+Mon, 29 Jan 2018 16:01:09 utils.py[line:302] INFO loading expElogbeta from lda.model.expElogbeta.npy with mmap=None
+Mon, 29 Jan 2018 16:01:09 utils.py[line:333] INFO setting ignored attribute dispatcher to None
+Mon, 29 Jan 2018 16:01:09 utils.py[line:333] INFO setting ignored attribute state to None
+Mon, 29 Jan 2018 16:01:09 utils.py[line:333] INFO setting ignored attribute id2word to None
+Mon, 29 Jan 2018 16:01:09 utils.py[line:282] INFO loaded lda.model
+Mon, 29 Jan 2018 16:01:09 utils.py[line:276] INFO loading LdaModel object from lda.model.state
+Mon, 29 Jan 2018 16:01:09 utils.py[line:282] INFO loaded lda.model.state
+Mon, 29 Jan 2018 16:01:09 utils.py[line:276] INFO loading Dictionary object from lda.dct
+Mon, 29 Jan 2018 16:01:09 utils.py[line:282] INFO loaded lda.dct

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-from gensim import models
+from gensim import models, corpora
 import  pymongo
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+#    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -129,12 +129,16 @@ STATICFILES_DIRS = (
 
 # LDA模型
 LDA_MODEL = models.LdaModel.load(os.path.join(BASE_DIR, 'recommend/model/lda.model'))
-TEXT2VEC = models.LdaModel.load(os.path.join(BASE_DIR, 'recommend/model/lda.dct'))
+TEXT2VEC = corpora.Dictionary.load(os.path.join(BASE_DIR, 'recommend/model/lda.dct'))
+#TXTPATH = ['', '', open(os.path.join(BASE_DIR, 'recommend/testTop50.txt')), '']
+TXTPATH1 = ''
+TXTPATH2 = ''
+TXTPATH3 = ''
 
 # mongo数据库
-# DB_HOST = '192.168.68.11'
-# DB_PORT = 20000
-DB_HOST = 'localhost'
-DB_PORT = 27017
+DB_HOST = '192.168.68.11'
+DB_PORT = 20000
+# DB_HOST = 'localhost'
+# DB_PORT = 27017
 
 DB_CON = pymongo.MongoClient(DB_HOST, DB_PORT)

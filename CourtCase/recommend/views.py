@@ -4,15 +4,14 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 
 from time import clock
-import pymongo, json
+import pymongo, json, os
 
-from .collections import paragraph, lawcase, searchPerformTest
+from .collections import paragraph, lawcase
 from .casePerform import casePerform
-from .statutePerform import statutePerform
+from .perform import searchStatuteEvaluateDisplay, searchEvaluateDispaly
 from .roughExtract import roughExtract
 
 TACTICS_OPTIONS = ["关键字", "TFIDF", "LDA"]
-
 
 def index(request):
     return render(request, 'recommend/index.html')
@@ -36,7 +35,6 @@ def list_format(cases, option):
                 id=str(c[0]),
                 title=c[1],
             ))
-
     return res
 
 
@@ -120,8 +118,32 @@ def getcoverCount(standard, test):
     return count
 
 
+def getMethod3FromTxt(option):
+    res = []
+    fp = None
+    if option == '2':
+        fp = settings.TXTPATH2
+    elif option == '3':
+        fp = settings.TXTPATH3
+    else:
+        fp = settings.TXTPATH4
+    for line in fp.readlines():
+        l = line.split('\t')
+        standard = l[0]
+        search = l[1].split(' ')
+        if '\n' in search:
+            search.remove('\n')
+        res.append((standard, search))
+    return res
+
+
 def gettestresult(searchRes, option, col, referenceStandard):
-    idlist = [r['id'] for r in list_format(searchRes, option)]
+    idlist = None
+    if option != "test":
+        idlist = [r['id'] for r in list_format(searchRes, option)]
+    else:
+        idlist = searchRes
+
     result = []
     for id in idlist:
         case = dict()
@@ -130,6 +152,10 @@ def gettestresult(searchRes, option, col, referenceStandard):
                      for ref in col.find_one({"fullTextId": id})['references']]
         case['ref'] = reference
         case['covercount'] = getcoverCount(referenceStandard, reference)
+        case['sim1'] = round(case['covercount']/(len(referenceStandard)+len(case['ref'])-case['covercount']), 4)
+        P = case['covercount']/len(case['ref'])
+        R = case['covercount']/len(referenceStandard)
+        case['sim2'] = round(2 * P * R / (P + R), 4) if (P+R) != 0 else 0
         result.append(case)
     return result
 
@@ -137,20 +163,28 @@ def gettestresult(searchRes, option, col, referenceStandard):
 def test(request, pwd, option):
     if pwd == "p123456":
         print("enter test************")
-        col1 = settings.DB_CON.divorceCase.lawcase
-        col2 = settings.DB_CON.divorceCase.lawreference
-        col3 = settings.DB_CON.divorceCase.searchPerformTest if option == '3' else settings.DB_CON.divorceCase.searchPerformVerify
+        options = ['2', '3', '4']
+        if option not in options:
+            return HttpResponse("option error!")
+
+        col1 = settings.DB_CON.divorceCase3.alldata
+        col2 = settings.DB_CON.divorceCase3.lawreference
+        col3 = settings.DB_CON.divorceCase3.searchPerform
 
         i = 1
 
         cur = col1.find({"tag": option}, no_cursor_timeout=True)
-        for case in cur:
+        for caseids in getMethod3FromTxt(option):
+            if col3.find_one({"searchId": caseids[0]}) is not None:
+                continue
+            case = col1.find_one({"fullTextId": caseids[0]})
             referenceStandard = [ref['name'].strip() + ref['levelone'].strip() \
                                  for ref in col2.find_one({"fullTextId": case['fullTextId']})['references']]
 
             res = dict()
             res['searchId'] = case['fullTextId']
             res['ref'] = referenceStandard
+            res['tag'] = case['tag']
 
             query = case['plaintiffAlleges']['text'] \
                     + case['defendantArgued']['text'] \
@@ -166,6 +200,8 @@ def test(request, pwd, option):
             roughResByLda = rough.getIndexListbyLda()
             res['resByLda'] = gettestresult(roughResByLda, "LDA", col2, referenceStandard)
 
+            res['resByTest'] = gettestresult(caseids[1], "test", col2, referenceStandard)
+
             col3.insert(res)
             print("第 %d 次写入" % i)
             i += 1
@@ -175,65 +211,42 @@ def test(request, pwd, option):
         return HttpResponse("faild!")
 
 
-def genEvaluate(request, pwd):
-    if pwd == "p123456":
-        col = settings.DB_CON.divorceCase.searchEvaluate
-        resList = []
-
-        sp = searchPerformTest()
-        statuteEvaluate = statutePerform(sp).genEvaluate()
-        resList.append({
-            'name' : 'statutePrecison',
-            'method' : statuteEvaluate['precision']
-        })
-        resList.append({
-            'name': 'statuteRecall',
-            'method': statuteEvaluate['recall']
-        })
-        resList.append({
-            'name': 'statuteF1',
-            'method': statuteEvaluate['f1']
-        })
-
-        caseEvaluate = casePerform(sp).genEvaluate()
-        resList.append({
-            'name': 'casePrecision',
-            'method': caseEvaluate['precision'],
-        })
-
-        col.insert(resList)
-
-        return True
-    else:
-        return HttpResponse('faild!')
-
-
-
 def test_res_display(request):
-    sp = searchPerformTest()
-    res = statutePerform(sp).getStatutePerform(0)
-    return render(request, 'recommend/testResult.html', res)
+    return render(request, 'recommend/testResult.html')
 
 
-def case_p_display(request):
-    sp = searchPerformTest()
-    res = casePerform(sp).getCasePerform()
-    return JsonResponse(res)
+# def case_p_display(request):
+#     sp = searchPerformTest()
+#     res = casePerform(sp).getCasePerform()
+#     return JsonResponse(res)
+#
+#
+# def statute_p_display(request):
+#     res = searchEvaluateDispaly().getStatutePerform(0)
+#     return JsonResponse(res)
+#
+#
+# def statute_r_display(request):
+#     res = searchEvaluateDispaly().getStatutePerform(1)
+#     return JsonResponse(res)
 
 
-def statute_p_display(request):
-    sp = searchPerformTest()
-    res = statutePerform(sp).getStatutePerform(0)
-    return JsonResponse(res)
+# def statute_p_r_display(request, prf, tag):
+#     res = None
+#     if str(tag) == '3':
+#         res = searchStatuteEvaluateDisplay().getStatutePerform(prf)
+#     elif str(tag) == '0' or str(tag) == '1' or str(tag) == '2':
+#         res = searchEvaluateDispaly().getStatutePerform(2, prf, str(int(tag)+2))
+#     else:
+#         return HttpResponse("tag error!")
+#     return JsonResponse(res)
 
-
-def statute_r_display(request):
-    sp = searchPerformTest()
-    res = statutePerform(sp).getStatutePerform(1)
-    return JsonResponse(res)
-
-
-def statute_p_r_display(request):
-    sp = searchPerformTest()
-    res = statutePerform(sp).getStatutePerform(2)
+def statute_prf_display(request):
+    limit = str(request.GET.get('limit'))
+    tag = str(request.GET.get('tag'))
+    res = None
+    if tag == '0' or tag == '1' or tag == '2':
+        res = searchStatuteEvaluateDisplay().getStatutePerform(str(int(tag)+2), limit)
+    else:
+        return HttpResponse("tag error!",tag)
     return JsonResponse(res)

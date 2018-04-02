@@ -14,7 +14,7 @@ def getDataFromMongo(col):
     caseList = list()
     idList = list()
     # i = 1
-    for item in col.find():
+    for item in col.find().limit(50):
         words = item['ldasrc'].strip().split(' ')
         caseList.append(words)
         idList.append(item['fulltextid'])
@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
     print('build dictionary')
     dictionary = corpora.Dictionary(caselist)
-    dictionary.save('lda.dct')
+    #dictionary.save('lda.dct')
     dict_len = len(dictionary)
     # transform the whole texts to sparse vector
     corpus = [dictionary.doc2bow(case) for case in caselist]
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     lda = models.LdaModel(corpus, num_topics=num_topics, id2word=dictionary,
           alpha=0.01, eta=0.01, minimum_probability=0.001, update_every = 1, chunksize = 100, passes = 1)
     print('out lda')
-    lda.save('lda.model')
+    #lda.save('lda.model')
 
     doc_topics = lda.get_document_topics(corpus)
 
@@ -83,17 +83,32 @@ if __name__ == '__main__':
     write2mongo(col2, idlist, dislist)
 
 
-    num_show_term = 10   # 每个主题下显示几个词
-    for topic_id in range(num_topics):
-        logging.info('第%d个主题的词与概率如下：\t' % topic_id)
-        term_distribute_all = lda.get_topic_terms(topicid=topic_id)
-        term_distribute = term_distribute_all[:num_show_term]
-        term_distribute = np.array(term_distribute)
-        term_id = term_distribute[:, 0].astype(np.int)
-        logging.info('词：\t')
-        for t in term_id:
-            logging.info(dictionary.id2token[t])
-        logging.info('\n概率：\t', term_distribute[:, 1])
+    # num_show_term = 10   # 每个主题下显示几个词
+    # for topic_id in range(num_topics):
+    #     logging.info('第%d个主题的词与概率如下：\t' % topic_id)
+    #     term_distribute_all = lda.get_topic_terms(topicid=topic_id)
+    #     term_distribute = term_distribute_all[:num_show_term]
+    #     term_distribute = np.array(term_distribute)
+    #     term_id = term_distribute[:, 0].astype(np.int)
+    #     logging.info('词：\t')
+    #     for t in term_id:
+    #         logging.info(dictionary.id2token[t])
+    #     logging.info('\n概率：\t', term_distribute[:, 1])
+
+
+    testlda = models.LdaModel.load('lda.model')
+    testdict = corpora.Dictionary.load('lda.dct')
+    for case, dis in zip(caselist, doc_topics):
+        print(testlda[testdict.doc2bow(case)])
+        print(testlda[testdict.doc2bow(case)])
+        print(testlda.get_document_topics(testdict.doc2bow(case)))
+        print(testlda.get_document_topics(testdict.doc2bow(case)))
+        print(lda[testdict.doc2bow(case)])
+        print(lda.get_document_topics(testdict.doc2bow(case)))
+        print(lda[dictionary.doc2bow(case)])
+        print(lda.get_document_topics(dictionary.doc2bow(case)))
+        print(dis)
+        print()
 
 
     # mpl.rcParams['font.sans-serif'] = [u'SimHei']

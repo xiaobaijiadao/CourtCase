@@ -1,11 +1,9 @@
 import pymongo
 from bson.objectid import ObjectId
-from django.conf import settings
-
 
 class indexTable:
-    def __init__(self):
-        self.col = settings.DB_CON.divorceCase3.indexTable
+    def __init__(self, con):
+        self.col = con.divorceCase3.indexTable
 
     def getCaselistByKeyforkeyword(self, word):
         res = dict()
@@ -26,8 +24,8 @@ class indexTable:
 
 
 class LDAvec:
-    def __init__(self):
-        self.col = settings.DB_CON.divorceCase3.LDAvec
+    def __init__(self, con):
+        self.col = con.divorceCase3.LDAvec
 
     def getCaselistByDis(self, dis):
         res = list()
@@ -49,7 +47,7 @@ class LDAvec:
 
         for item in self.col.find(cond):
             cs = dict()
-            cs["id"] = item["fullTextId"]
+            cs["id"] = item["fullId"]
             cs["vec"] = item['vec']
             res.append(cs)
 
@@ -70,7 +68,7 @@ class LDAvec:
 
         for item in self.col.find(cond):
             cs = dict()
-            cs["id"] = item["fullTextId"]
+            cs["id"] = item["fullId"]
             cs["vec"] = item['vec']
             res.append(cs)
 
@@ -87,45 +85,26 @@ class LDAvec:
 
         for item in self.col.find(cond):
             cs = dict()
-            cs["id"] = item["fullTextId"]
+            cs["id"] = item["fullId"]
+            cs["vec"] = item['vec']
             res.append(cs)
 
         return res
 
-
-class paragraph:
-    def __init__(self):
-        self.col = settings.DB_CON.divorceCase3.databaseAJsegment
-
-    def getInfo(self, id):
-        item = self.col.find_one({"_id" : ObjectId(id)})
-        return (item['fulltextid'], item['title'])
-
-    def getInfoByFullTextId(self, id):
-        item = self.col.find_one({"fulltextid": id})
-        return (item['fulltextid'], item['title'])
-
-
-class AJsegment:
-    def __init__(self):
-        self.col = settings.DB_CON.divorceCase3.databaseAJsegment
-
-    def getfulltextid(self, id):
-        item = self.col.find_one({"_id" : ObjectId(id)})
-        return item['fulltextid']
-
-
-class lawcase:
-    def __init__(self):
-        self.col = settings.DB_CON.lawCase.lawcase
-
-    def getInfo(self, id):
-        item = self.col.find_one({"_id" : ObjectId(id)})
-        return item['text']
+    def getCaseList(self):
+        res = list()
+        cur  = self.col.find(no_cursor_timeout=True)
+        for item in cur:
+            cs = dict()
+            cs["id"] = item["fullId"]
+            cs["vec"] = item['vec']
+            res.append(cs)
+        cur.close()
+        return res
 
 class dispute:
-    def __init__(self):
-        self.col = settings.DB_CON.lawCase.tokendispute
+    def __init__(self, con):
+        self.col = con.lawCase.tokendispute
 
     def getAllWeight(self):
         res = dict()
@@ -135,8 +114,8 @@ class dispute:
         return res
 
 class searchPerformTest:
-    def __init__(self):
-        self.col = settings.DB_CON.divorceCase3.searchPerform
+    def __init__(self, con):
+        self.col = con.divorceCase3.searchPerform
 
     def getReferenceNum(self):
         refNum = [len(item['ref']) for item in self.col.find()]
@@ -192,10 +171,10 @@ class searchPerformTest:
 
 
 class searchEvaluate:
-    def __init__(self):
-        self.col = settings.DB_CON.divorceCase3.searchPerformEvaluate
+    def __init__(self, con):
+        self.col = con.divorceCase3.searchPerformEvaluate
 
-    def getRateByName(self, limit, tag):
+    def getRateByName(self, name, tag):
         res = []
         for item in self.col.find_one({"name" : name, "tag": tag})['method']:
             res.append(item['value'])
@@ -214,43 +193,9 @@ class searchEvaluate:
         return res
 
 
-class searchResEvaluate:
-    def __init__(self):
-        self.col = settings.DB_CON.divorceCase3.searchResEvaluate
-        self.limit = ['1', '3', '5', '10', '20', '50']
-
-    def getPrecisionAndName(self, tag, limit):
-        res = {
-            'tName' : [],
-            'sortPrecisionList' : [],
-            'sortRecallList' : [],
-            'sortF1List' : [],
-            'noSortPrecisionList' : [],
-            'noSortRecallList' : [],
-            'noSortF1List' : [],
-        }
-
-        if limit not in self.limit:
-            return None
-
-        cur = self.col.find({'tag': tag}, no_cursor_timeout = True)
-        index = self.limit.index(limit)
-        for item in cur:
-            res['tName'].append(item['tname'])
-            res['sortPrecisionList'].append(item['sortP'][index])
-            res['sortRecallList'].append(item['sortR'][index])
-            res['sortF1List'].append(item['sortF'][index])
-            res['noSortPrecisionList'].append(item['nosortP'][index])
-            res['noSortRecallList'].append(item['nosortR'][index])
-            res['noSortF1List'].append(item['nosortF'][index])
-        cur.close()
-
-        return res
-
-
 class searchStatuteEvaluate:
-    def __init__(self):
-        self.col = settings.DB_CON.divorceCase3.searchStatutePerformValidateEvaluate
+    def __init__(self, con):
+        self.col = con.divorceCase3.searchStatutePerformValidateEvaluate
 
     def getRateByName(self, option):
         if option not in ['precision', 'recall', 'f-measure']:
